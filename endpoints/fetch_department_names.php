@@ -1,25 +1,22 @@
 <?php
-global $conn;
-include("include/config.php");
+include("/Applications/XAMPP/xamppfiles/htdocs/Konmra_project/include/config.php");
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+$conn = getDBConnection();
 
-$query = "SELECT `ناوی بەش` FROM `hawler` ORDER BY `ناوی بەش`
+$query = "(SELECT `ناوی بەش` FROM `hawler` ORDER BY `ناوی بەش`)
           UNION ALL
-          SELECT `ناوی بەش` FROM `slemani` ORDER BY `ناوی بەش`
+          (SELECT `ناوی بەش` FROM `slemani` ORDER BY `ناوی بەش`)
           UNION ALL
-          SELECT `ناوی بەش` FROM `duhok` ORDER BY `ناوی بەش`";
+          (SELECT `ناوی بەش` FROM `duhok` ORDER BY `ناوی بەش`)";
 
 $result = mysqli_query($conn, $query);
 
-if(!$result) {
-    die("Query failed " . mysqli_error($conn));
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
 }
 
 $data = array();
-while($row = mysqli_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
     $data[] = $row['ناوی بەش'];
 }
 
