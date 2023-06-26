@@ -11,3 +11,5 @@ if (!$conn) {
     error_log($errorMessage);
     exit("Oops, something went wrong");
 }
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
