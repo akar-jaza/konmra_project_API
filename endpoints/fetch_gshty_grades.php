@@ -16,6 +16,7 @@ if (!$result) {
 }
 
 $data = array();
+
 while ($row = mysqli_fetch_array($result)) {
     $data[] = $row['گشتی'];
 }
@@ -25,6 +26,9 @@ mysqli_close($conn);
 
 // Sort the grades in ascending order
 rsort($data);
+
+// Remove the first element (title) from the array
+array_shift($data);
 
 header("Content-type: application/json");
 echo json_encode(array_values($data));
