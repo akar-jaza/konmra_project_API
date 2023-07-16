@@ -70,8 +70,6 @@ function normalizeKurdishText($text) {
         'ﺻ' => 'ص',
 
 
-
-
         // Include other non-standard characters and their standard counterparts
     );
 
