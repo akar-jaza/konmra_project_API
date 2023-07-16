@@ -63,11 +63,13 @@ function normalizeKurdishText($text) {
         'ﻻ' => 'لا',
         'ﻠ' => 'ل',
         'ﻟ' => 'ل',
+        'ﻞ' => 'ل',
         'ﺟ' => 'ج',
         'ﺠ' => 'ج',
         'ﺣ' => 'ح',
         'ﭽ' => 'چ',
         'ﺻ' => 'ص',
+        'ﻋ' => 'ع',
 
 
         // Include other non-standard characters and their standard counterparts
