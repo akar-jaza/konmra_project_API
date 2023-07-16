@@ -10,22 +10,13 @@ $conn = getDBConnection();
 mysqli_set_charset($conn, 'utf8mb4');
 mysqli_query($conn, "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_unicode_ci'");
 
-// Define pagination parameters
-$page = $_GET['page'] ?? 1; // Current page number
-$pageSize = $_GET['pageSize'] ?? 20; // Number of items per page
-
-// Calculate the offset
-$offset = ($page - 1) * $pageSize;
-
-$searchQuery = $_GET['searchQuery'] ?? '';
-
 // Query to fetch data for all cities
 $query = "SELECT `ناوی بەش`, `پارێزگا`, `گشتی` FROM `slemani` 
           UNION ALL
           SELECT `ناوی بەش`, `پارێزگا`, `گشتی` FROM `hawler`
           UNION ALL
           SELECT `ناوی بەش`, `پارێزگا`, `گشتی` FROM `duhok`
-          LIMIT $offset, $pageSize";
+          ORDER BY `گشتی` DESC";
 
 $result = mysqli_query($conn, $query);
 
@@ -40,9 +31,12 @@ $data = array(
 );
 
 while ($row = mysqli_fetch_array($result)) {
-    $data['departmentName'][] = $row['ناوی بەش'];
-    $data['parezga'][] = $row['پارێزگا'];
-    $data['gshty'][] = $row['گشتی'];
+    // Skip the row if it contains "ناوی بەش"
+    if ($row['ناوی بەش'] !== "ناوی بەش") {
+        $data['departmentName'][] = $row['ناوی بەش'];
+        $data['parezga'][] = $row['پارێزگا'];
+        $data['gshty'][] = $row['گشتی'];
+    }
 }
 
 mysqli_free_result($result);
