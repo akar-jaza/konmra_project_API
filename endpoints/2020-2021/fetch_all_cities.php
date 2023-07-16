@@ -10,6 +10,43 @@ $conn = getDBConnection();
 mysqli_set_charset($conn, 'utf8mb4');
 mysqli_query($conn, "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_unicode_ci'");
 
+// Custom normalization function to replace non-standard characters
+function normalizeKurdishText($text) {
+    $replacements = array(
+        // Add more mappings as needed
+        'ﭘ' => 'پ',
+        'ﺰ' => 'ز',
+        'ﯾ' => 'ی',
+        'ﮑ' => 'ک',
+        'ﺸ' => 'ش',
+        'ﻪ' => 'ە',
+        'ی' => 'ی',
+        'ﯽ' => 'ی',
+        'ﻜ' => 'ک',
+        'ﻰ' => 'ی',
+        'ﺎ' => 'ا',
+        'ﺮ' => 'ر',
+        'ﻣ' => 'م',
+        'ﯿ' => 'ی',
+        'ﺪ' => 'د',
+        'ﮏ' => 'ک',
+        'ﺗ' => 'ت',
+        'ﻧ' => 'ن',
+        'ﻚ' => 'ک',
+        'ﻛ' => 'ک',
+        'ﻤ' => 'م',
+        'ﻓ' => 'ف',
+        'ﮐ' => 'ک',
+        'ﺳ' => 'س',
+
+
+
+        // Include other non-standard characters and their standard counterparts
+    );
+
+    return strtr($text, $replacements);
+}
+
 // Query to fetch data for all cities
 $query = "SELECT `ناوی بەش`, `پارێزگا`, `گشتی` FROM `slemani` 
           UNION ALL
@@ -33,7 +70,9 @@ $data = array(
 while ($row = mysqli_fetch_array($result)) {
     // Skip the row if it contains "ناوی بەش"
     if ($row['ناوی بەش'] !== "ناوی بەش") {
-        $data['departmentName'][] = $row['ناوی بەش'];
+        // Normalize the Kurdish text before adding it to the data array
+        $departmentName = normalizeKurdishText($row['ناوی بەش']);
+        $data['departmentName'][] = $departmentName;
         $data['parezga'][] = $row['پارێزگا'];
         $data['gshty'][] = $row['گشتی'];
     }
@@ -44,3 +83,4 @@ mysqli_close($conn);
 
 header("Content-type: application/json; charset=utf-8");
 echo json_encode($data);
+
